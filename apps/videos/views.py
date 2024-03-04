@@ -8,4 +8,4 @@ from django.http import StreamingHttpResponse
 
 class TestView(APIView):
   def get(self, request):
-    return Response("Hello world!")
+    return Response("Hello world!!!")
