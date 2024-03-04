@@ -1,0 +1,32 @@
+name: Django CI
+
+on:
+    pull_request:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+            DEBUG: on
+            SECRET_KEY: django-camera-billiards-hb+wr#2mma&&q6rl8%qcjb5(m055q3$a2d65rhg26n00*6$+d7
+            DATABASE_NAME: postgres
+            DATABASE_USER: postgres
+            DATABASE_PASS: 1234
+            DATABASE_HOST: localhost
+            DATABASE_PORT: 5432
+        strategy:
+            max-parallel: 4
+            matrix:
+                python-version: [3.9.13]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v3
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install Dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
+            - name: Run Tests
+              run: |
+                  pytest
