@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'apps.videos',
+    'apps.shared',
     'apps.home',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
