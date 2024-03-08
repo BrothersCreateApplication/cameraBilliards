@@ -23,6 +23,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.static import serve
 from django.conf import settings
 from django_otp.admin import OTPAdminSite
+from django.conf import settings
+from django.conf.urls.static import static
   
 schema_view = get_schema_view(
     openapi.Info(
@@ -52,6 +54,8 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
 

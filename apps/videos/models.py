@@ -1,6 +1,5 @@
 from django.db import models
 from apps.flax_id.django.fields import FlaxId
-
 # Create your models here.
 
 class Video(models.Model):
@@ -10,6 +9,7 @@ class Video(models.Model):
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
     duration = models.IntegerField(default=0)
+    video_file = models.FileField(upload_to='videos/', null=True, blank=True)
     video_path = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -1,0 +1,10 @@
+<!-- show_video.html -->
+<h2>{{ video.title }}</h2>
+<p>Description: {{ video.description }}</p>
+<p>Uploaded by: {{ video.user.username }}</p>
+<p>Start Time: {{ video.start_time }}</p>
+<p>End Time: {{ video.end_time }}</p>
+<video width="640" height="480" controls>
+    <source src="{{ video.video_file.url }}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
