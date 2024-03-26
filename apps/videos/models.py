@@ -2,6 +2,7 @@ from django.db import models
 from apps.flax_id.django.fields import FlaxId
 # Create your models here.
 from django.utils.translation import gettext_lazy as _
+import os
 
 class CameraStatus(models.TextChoices):
     ACTIVE = 'active', _('Active')
@@ -18,6 +19,9 @@ class Camera(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
 
 class VideoSegment(models.Model):
     id = FlaxId(primary_key=True)
@@ -28,3 +32,12 @@ class VideoSegment(models.Model):
     video_file = models.FileField(upload_to='videos/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.description
+
+    def delete(self, *args, **kwargs):
+        if self.video_file:
+            if os.path.isfile(self.video_file.path):
+                os.remove(self.video_file.path)
+        super().delete(*args, **kwargs)
