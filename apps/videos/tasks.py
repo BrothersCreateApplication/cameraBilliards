@@ -3,6 +3,7 @@ import cv2
 import time
 from .models import VideoSegment
 from datetime import datetime, timedelta
+from .models import VideoSegment
 
 def consume_rtsp_stream(rtsp_url, output_file_prefix):
 	cap = cv2.VideoCapture(rtsp_url)
@@ -43,6 +44,14 @@ def consume_rtsp_stream(rtsp_url, output_file_prefix):
     
 			filename = f'{output_file_prefix}_{interval_counter}.avi'
 			outputStream = cv2.VideoWriter(filename, fourcc, fps, (frame_width, frame_height))
+   
+			segment = VideoSegment.objects.create(
+				description=f'Segment {interval_counter}',
+          start_time=interval_start_time,
+          end_time=interval_end_time,
+          video_file=f'videos/{filename}'
+        )
+			segment.save()
 		
 		if outputStream:
 			outputStream.write(frame)
