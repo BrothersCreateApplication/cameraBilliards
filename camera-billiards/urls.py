@@ -41,7 +41,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('adad/', admin.site.urls),
     path("", include("apps.home.urls")),
-    path("api/v1/videos/", include(("apps.videos.urls", "videos"), namespace="videos")),
+    path("camera/", include(("apps.videos.urls", "videos"), namespace="videos")),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
