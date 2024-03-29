@@ -1,23 +1,88 @@
-<!-- segment_list.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Segments for {{ video.description }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Segments for {{ camera.name }}</title>
 </head>
 <body>
-    <h1>Segments for {{ video.video_file }}</h1>
-    <ul>
-      <video controls>
-        <source src="data:video/mp4;base64, {{ video.segment_data }}" type="video/mp4">
+    <h1>Video trực tuyến {{ camera.name }}</h1>
+    <video controls>
+        <source src="{{playing_segment.video_file.url}}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    <div id="reloadButton" class="refresh-btn"><i class="fas fa-sync-alt"></i><span>LÀM MỚI DANH SÁCH</span></div>
+    <ul class="list">
         {% for segment in segments %}
-            <li><a href="/">{{ segment.description }} {{ segment.segment_data }} </a></li>
+            <li class="list-item {% if segment.id == playing_segment.id %}active{% endif %}"><a href="/camera/{{camera.id}}/segment/{{segment.id}}">{{ segment.start_time|date:"H:i" }} - {{ segment.end_time|date:"H:i - d/m/Y" }} </a></li>
         {% endfor %}
     </ul>
 </body>
+<style>
+    body {
+        padding: 10px 20px;
+        background: rgb(2,0,36);
+        background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(159,60,190,1) 28%, rgba(186,40,191,1) 100%);
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    h1 {
+        color: white;
+        font-size: 22px;
+    }
+
+    video {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        min-height: 187px;
+    }
+
+    .list {
+        padding-left: 0;
+    }
+
+    .list-item {
+        background-color: white;
+        margin-bottom: 8px;
+        padding: 12px;
+        list-style: none;
+        border-radius: 4px;
+    }
+
+    .list-item a {
+        color: #9f3cbe;
+        text-decoration: none;
+    }
+
+    .list-item.active {
+        color: white;
+        background-color: #3a7cd1;
+    }
+
+    .list-item.active a {
+        color: white;
+    }
+
+    .refresh-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin: 20px 0;
+        background-color: white;
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: -4px 6px 11px -1px rgba(0,0,0,0.75);
+        -webkit-box-shadow: -4px 6px 11px -1px rgba(0,0,0,0.75);
+        -moz-box-shadow: -4px 6px 11px -1px rgba(0,0,0,0.75);
+    }
+</style>
+<script>
+    document.getElementById("reloadButton").addEventListener("click", function() {
+        location.reload();
+    });
+</script>
 </html>

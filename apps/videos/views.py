@@ -6,6 +6,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi as yasg_openapi
 from django.http import StreamingHttpResponse
 from apps.users.models import User
+from .models import Camera, VideoSegment
 from django.shortcuts import render, redirect, get_object_or_404
 # from .forms import VideoForm
 from django.urls import reverse
@@ -15,10 +16,27 @@ class TestView(APIView):
     users = User.objects.all()
     return Response("Hello world!!!")
 
-# def segment_list_view(request, video_id):
-#     video = Video.objects.get(pk=video_id)
-#     segments = Frame.objects.filter(video=video)
-#     return render(request, 'videos/segment_list.html', {'video': video, 'segments': segments})
+def segment_list_default_view(request, camera_id):
+    try:
+      camera = Camera.objects.get(pk=camera_id)
+    except:
+      return render(request, 'videos/segment_list.html', {'error': 'Camera not found'})
+    segments = VideoSegment.objects.filter(camera=camera)
+    print(segments[0])
+    return render(request, 'videos/segment_list.html', {'camera': camera, 'playing_segment': segments[0] if len(segments) > 0 else None,'segments': segments})
+
+
+def segment_list_view(request, camera_id, segment_id):
+    try:
+      camera = Camera.objects.get(pk=camera_id)
+    except:
+      return render(request, 'videos/segment_list.html', {'error': 'Camera not found'})
+    try:
+      segment = VideoSegment.objects.get(pk=segment_id, camera=camera)
+    except:
+      return render(request, 'videos/segment_list.html', {'error': 'Segment not found'})
+    segments = VideoSegment.objects.filter(camera=camera)
+    return render(request, 'videos/segment_list.html', {'camera': camera, 'playing_segment': segment ,'segments': segments})
 
 
 # def upload_video(request):
