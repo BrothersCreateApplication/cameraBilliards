@@ -29,7 +29,7 @@ class VideoSegment(models.Model):
     description = models.CharField(max_length=255)
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    video_file = models.FileField(upload_to='videos/', null=True, blank=True)
+    video_file = models.FileField(upload_to='public/videos/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
