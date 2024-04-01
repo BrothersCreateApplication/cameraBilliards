@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi as yasg_openapi
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, JsonResponse
 from apps.users.models import User
 from .models import Camera, VideoSegment
 from django.shortcuts import render, redirect, get_object_or_404
@@ -41,13 +41,14 @@ def segment_list_view(request, camera_id, segment_id):
   
 def consume_rtsp_stream_task(request):
 	#should get from the request, temporary hardcode for now
-	rtsp_url = 'rtsp://admin:L2427AA6@192.168.1.3:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif'
-	output_file_prefix = 'camera_001'
+	rtsp_url = 'rtsp://admin:L2427AA6@192.168.1.11:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif'
+	output_file_prefix = 'camera_005'
  
 	if not (rtsp_url and output_file_prefix):
 		return JsonResponse({'error': 'Missing RTSP stream URL or output file name'}, status=400)
  
-	consume_rtsp_stream.delay(rtsp_url, output_file_prefix)
+	#consume_rtsp_stream.delay(rtsp_url, output_file_prefix)
+	consume_rtsp_stream(rtsp_url, output_file_prefix)
  
 	return JsonResponse({'message': 'RTSP stream store successfully'})
 
